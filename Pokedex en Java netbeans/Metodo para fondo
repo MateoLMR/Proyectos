@@ -1,0 +1,25 @@
+import java.awt.Graphics;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+/*
+Esta clase es para aplicar el fondo de la quequidex
+*/
+public class quequifondo extends JLabel{
+    private int x,y;
+    private final String path;
+    
+    public quequifondo(JPanel panel, String path){
+        this.path = path;
+        this.x = panel.getWidth();
+        this.y = panel.getHeight();
+        this.setSize(x,y);
+    }
+    
+    @Override
+    public void paint(Graphics g){
+        ImageIcon fondokex = new ImageIcon(getClass().getResource(path));
+        g.drawImage(fondokex.getImage(), 0, 0, x, y, null);
+    }
+}
