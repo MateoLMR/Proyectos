@@ -1,0 +1,776 @@
+import java.awt.BorderLayout;
+import java.awt.Color;
+import static java.awt.Color.black;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.plaf.basic.BasicScrollBarUI;
+
+/**
+ *
+ * @author Pc
+ */
+
+public class QueQuidex extends javax.swing.JFrame {
+
+    /*esto es para usar las variables globalmente en el programa*/
+    private inicio in;
+    private JLabel imagenespokemon;
+    private JLabel tipo;
+    private JLabel nombre;
+    private JLabel color;
+    private String[] pokemones;
+    private String[] imagenespoke;
+    private String[] tipopok;
+    private String[] nombrepok;
+    private String[] colorpok;
+
+    /*Este es el constructor
+    aqui es donde se ejecuta todo instantaneamente a la hora de iniciar el programa de la quequidex
+     */
+    public QueQuidex() {
+
+        initComponents();
+        /*Esto es para poner la imagen de fondo no cambiar nada
+        si van a cambiar la imagen me dicen antes de.
+         */
+        quequifondo fondokex1 = new quequifondo(fondokex, "/imagenes/quequifondo.jpg");
+        fondokex.add(fondokex1).repaint();
+        fondokex.setOpaque(false);
+        fondokex.setBorder(null);
+        fondokex.setBackground(new Color(0, 0, 0, 0));
+
+        /* 
+        Esto es para crear los labels que almacenaran todo y su configuracion
+        como el fondo, el color, que se muestren en el Jframe y en el caso de los datos
+        fuente y tamaño no cambair nada a menos que sea necesario(me avisan para explicarles mejor por si lo van acambiar)
+         */
+        imagenespokemon = new JLabel();
+        tipo = new JLabel();
+        nombre = new JLabel();
+        color = new JLabel();
+
+        imagenespokemon.setPreferredSize(new Dimension(120, 120));
+        imagenespokemon.setBounds(210, 180, 400, 400);
+        imagenespokemon.setBackground(new Color(198, 240, 255));
+        imagenespokemon.setOpaque(true);
+
+        tipo.setBounds(400, 600, 290, 40);
+        tipo.setBackground(Color.WHITE);
+        tipo.setOpaque(true);
+        tipo.setFont(new java.awt.Font("Unispace", 0, 28));
+        tipo.setForeground(Color.BLACK);
+        tipo.setHorizontalAlignment(JLabel.CENTER);
+        tipo.setVerticalAlignment(JLabel.CENTER);
+        tipo.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.BLACK, 4, true),
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)
+        ));
+
+        nombre.setBounds(310, 120, 220, 40);
+        nombre.setBackground(Color.WHITE);
+        nombre.setOpaque(true);
+        nombre.setFont(new java.awt.Font("Unispace", 0, 30));
+        nombre.setForeground(Color.BLACK);
+        nombre.setHorizontalAlignment(JLabel.CENTER);
+        nombre.setVerticalAlignment(JLabel.CENTER);
+        nombre.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.BLACK, 4, true),
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)
+        ));
+
+        color.setBounds(90, 600, 300, 40);
+        color.setBackground(Color.WHITE);
+        color.setOpaque(true);
+        color.setFont(new java.awt.Font("Unispace", 0, 28));
+        color.setForeground(Color.BLACK);
+        color.setHorizontalAlignment(JLabel.CENTER);
+        color.setVerticalAlignment(JLabel.CENTER);
+        color.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.BLACK, 4, true),
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)
+        ));
+
+        /* Estos son los arreglos donde van a almacenar el codigo y nombre del pokemon, la imagen, y los datos
+        agreguenlos en orden y tengan cuidado con las imagenes normalmente molesta mucho en como las llaman en el proyecto deje
+        un paquete para que agreguen todas las imagenes de los pokemon les deje el ejemplo de la imagen de bulbasaur para que sepan como deben llamarlas
+        (luego pueden cambiarla) e igualmente de como tienen que escribir los datos
+         */
+        pokemones = new String[]{"001 Bulbasaur", "002 Ivysaur", "003 Venusaur", "004 Charmander","005 Charmeleon",
+        "006 Charizard","007 Squirtle","008 Wartortle","009 Blastoise","010 Caterpie","011 Metapod",
+        "012 Butterfree","013 Weedle","014 Kakuna","015 Beedrill","016 Pidgey","017 Pidgeotto","018 Pidgeot",
+        "019 Rattata","020 Raticate","021 Spearow","022 Fearow","023 Ekans","024 Arbok","025 Pikachu","026 Raichu",
+        "027 Sandshrew","028 Sandslash","029 Nidoran","030 Nidorina","031 Nidoqueen","032 Nidoran","033 Nidorino","034 Nidoking",
+        "035 Clefairy","036 Clefable","037 Vulpix","038 Ninetales","039 Jigglypuff","040 Wigglytuff","041 Zubat",
+        "042 Golbat","043 Oddish","044 Gloom","045 Vileplume","046 Paras","047 Parasect","048 Venonat","049 Venomoth","050 Diglett",
+        "051 Dugtrio","052 Meowth","053 Persian","054 Psyduck","055 Golduck","056 Mankey","057 Primeape","058 Growlithe",
+        "059 Arcanine","060 Poliwag","061 Poliwhirl","062 Poliwrath","063 Abra","064 Kadabra","065 Alakazam","066 Machop",
+        "067 Machoke","068 Machamp","069 Bellsprout","070 Weepinbell","071 Victreebel","072 Tentacool","073 Tentacruel",
+        "074 Geodude","075 Graveler","076 Golem","077 Ponyta","078 Rapidash","079 Slowpoke","080 Slowbro","081 Magnemite",
+        "082 Magneton","083 Farfetch'd","084 Doduo","085 Dodrio","086 Seel","087 Dewgong","088 Grimer","089 Muk",
+        "090 Shellder","091 Cloyster","092 Gastly","093 Haunter ","094 Gengar","095 Onix","096 Drowzee","097 Hypno","098 Krabby",
+        "099 Kingler","100 Voltorb","101 Electrode","102 Exeggcute","103 Exeggutor","104 Cubone","105 Marowak","106 Hitmonlee",
+        "107 Hitmonchan","108 Lickitung","109 Koffing","110 Weezing","111 Rhyhorn","112 Rhydon","113 Chansey","114 Tangela",
+        "115 Kangaskhan","116 Horsea","117 Seadra","118 Goldeen","119 Seaking","120 Staryu","121 Starmie","122 Mr. Mime",
+        "123 Scyther","124 Jynx","125 Electabuzz","126 Magmar","127 Pinsir","128 Tauros","129 Magikarp","130 Gyarados",
+        "131 Lapras","132 Ditto","133 Eevee","134 Vaporeon","135 Jolteon","136 Flareon","137 Porygon","138 Omanyte",
+        "139 Omastar","140 Kabuto","141 Kabutops","142 Aerodactyl","143 Snorlax","144 Articuno","145 Zapdos",
+        "146 Moltres","147 Dratini","148 Dragonair","149 Dragonite","150 Mewtwo","151 Mew "
+        
+        
+        
+        };
+        imagenespoke = new String[]{
+           "/imagenespokemones/Bulbasur.png",
+            "/imagenespokemones/Sin título.png",
+            "/imagenespokemones/003.png",
+             "/imagenespokemones/Charmander.png",
+             "/imagenespokemones/Charmeleon.png",
+             "/imagenespokemones/Charizard.png",
+             "/imagenespokemones/Squirtle.png",
+             "/imagenespokemones/Wartortle.png",
+             "/imagenespokemones/Blastoise.png",
+             "/imagenespokemones/Caterpie.png",
+             "/imagenespokemones/Metapod.png",
+             "/imagenespokemones/Butterfree.png",
+             "/imagenespokemones/Weedle.png",
+             "/imagenespokemones/Kakuna.png",
+             "/imagenespokemones/Beedrill.png",
+             "/imagenespokemones/Pidgey.png",
+             "/imagenespokemones/Pidgeotto.png",
+             "/imagenespokemones/Pidgeot.png",
+             "/imagenespokemones/Rattata.png",
+             "/imagenespokemones/Raticate.png",
+             "/imagenespokemones/Spearow.png",
+             "/imagenespokemones/Fearow.png",
+             "/imagenespokemones/Ekans.png",
+             "/imagenespokemones/Arbok.png",
+             "/imagenespokemones/Pikachu.png",
+             "/imagenespokemones/Raichu.png",
+             "/imagenespokemones/Sandshrew.png",
+             "/imagenespokemones/Sandslash.png",
+             "/imagenespokemones/Nidoran.png",
+             "/imagenespokemones/Nidorina.png",
+             "/imagenespokemones/Nidoqueen.png",
+             "/imagenespokemones/Nidoran (2).png",
+             "/imagenespokemones/Nidorino.png",
+             "/imagenespokemones/Nidoking.png",
+             "/imagenespokemones/Clefairy.png",
+             "/imagenespokemones/Clefable.png",
+             "/imagenespokemones/Vulpix.png",
+             "/imagenespokemones/Ninetales.png",
+             "/imagenespokemones/Jigglypuff.png",
+             "/imagenespokemones/Wigglytuff.png",
+             "/imagenespokemones/Zubat.png",
+             "/imagenespokemones/Golbat.png",
+             "/imagenespokemones/Oddish.png",
+             "/imagenespokemones/Gloom.png",
+             "/imagenespokemones/Vileplume.png",
+             "/imagenespokemones/Paras.png",
+             "/imagenespokemones/Parasect.png",
+             "/imagenespokemones/Venonat.png",
+             "/imagenespokemones/Venomoth.png",
+             "/imagenespokemones/Diglett.png",
+             "/imagenespokemones/Dugtrio.png",
+             "/imagenespokemones/Meowth.png",
+             "/imagenespokemones/Persian.png",
+             "/imagenespokemones/Psyduck.png",
+             "/imagenespokemones/Golduck.png",
+             "/imagenespokemones/Mankey.png",
+             "/imagenespokemones/Primeape.png",
+             "/imagenespokemones/Growlithe.png",
+             "/imagenespokemones/Arcanine.png",
+             "/imagenespokemones/Poliwag.png",
+             "/imagenespokemones/Poliwhirl.png",
+             "/imagenespokemones/Poliwrath.png",
+             "/imagenespokemones/Abra.png",
+             "/imagenespokemones/Kadabra.png",
+             "/imagenespokemones/Alakazam.png",
+             "/imagenespokemones/Machop.png",
+             "/imagenespokemones/Machoke.png",
+             "/imagenespokemones/Machamp.png",
+             "/imagenespokemones/Bellsprout.png",
+             "/imagenespokemones/Weepinbell.png",
+             "/imagenespokemones/Victreebel.png",
+             "/imagenespokemones/Tentacool.png",
+             "/imagenespokemones/Tentacruel.png",
+             "/imagenespokemones/Geodude.png",
+             "/imagenespokemones/Graveler.png",
+             "/imagenespokemones/Golem.png",
+             "/imagenespokemones/Ponyta.png",
+             "/imagenespokemones/Rapidash.png",
+             "/imagenespokemones/Slowpoke.png",
+             "/imagenespokemones/Slowbro.png",
+             "/imagenespokemones/Magnemite.png",
+             "/imagenespokemones/Magneton.png",
+             "/imagenespokemones/Farfetch'd.png",
+             "/imagenespokemones/Doduo.png",
+             "/imagenespokemones/Dodrio.png",
+             "/imagenespokemones/Seel.png",
+             "/imagenespokemones/Dewgong.png",
+             "/imagenespokemones/Grimer.png",
+             "/imagenespokemones/Muk.png",
+             "/imagenespokemones/Shellder.png",
+             "/imagenespokemones/Cloyster.png",
+             "/imagenespokemones/Gastly.png",
+             "/imagenespokemones/Haunter.png",
+             "/imagenespokemones/Gengar.png",
+             "/imagenespokemones/Onix.png",
+             "/imagenespokemones/Drowzee.png",
+             "/imagenespokemones/Hypno.png",
+             "/imagenespokemones/Krabby.png",
+             "/imagenespokemones/Kingler.png",
+              "/imagenespokemones/Voltorb.png",
+             "/imagenespokemones/Electrode.png",
+             "/imagenespokemones/Exeggcute.png",
+             "/imagenespokemones/Exeggutor.png",
+             "/imagenespokemones/Cubone.png",
+             "/imagenespokemones/Marowak.png",
+             "/imagenespokemones/Hitmonlee.png",
+             "/imagenespokemones/Hitmonchan.png",
+             "/imagenespokemones/Lickitung.png",
+             "/imagenespokemones/Koffing.png",
+             "/imagenespokemones/Weezing.png",
+             "/imagenespokemones/Rhyhorn.png",
+             "/imagenespokemones/Rhydon.png",
+             "/imagenespokemones/Chansey.png",
+             "/imagenespokemones/Tangela.png",
+             "/imagenespokemones/Kangaskhan.png",
+             "/imagenespokemones/Horsea.png",
+             "/imagenespokemones/Seadra.png",
+             "/imagenespokemones/Goldeen.png",
+             "/imagenespokemones/Seaking.png",
+             "/imagenespokemones/Staryu.png",
+             "/imagenespokemones/Starmie.png",
+             "/imagenespokemones/Mr. Mime.png",
+             "/imagenespokemones/Scyther.png",
+             "/imagenespokemones/Jynx.png",
+             "/imagenespokemones/Electabuzz.png",
+             "/imagenespokemones/Magmar.png",
+             "/imagenespokemones/Pinsir.png",
+             "/imagenespokemones/Tauros.png",
+             "/imagenespokemones/Magikarp.png",
+             "/imagenespokemones/Gyarados.png",
+             "/imagenespokemones/Lapras.png",
+             "/imagenespokemones/Ditto.png",
+             "/imagenespokemones/Eevee.png",
+             "/imagenespokemones/Vaporeon.png",
+             "/imagenespokemones/Jolteon.png",
+             "/imagenespokemones/Flareon.png",
+             "/imagenespokemones/Porygon.png",
+             "/imagenespokemones/Omanyte.png",
+             "/imagenespokemones/Omastar.png",
+             "/imagenespokemones/Kabuto.png",
+             "/imagenespokemones/Kabutops.png",
+              "/imagenespokemones/Aerodactyl.png",
+             "/imagenespokemones/Snorlax.png",
+             "/imagenespokemones/Articuno.png",
+             "/imagenespokemones/Zapdos.png",
+             "/imagenespokemones/Moltres.png",
+             "/imagenespokemones/Dratini.png",
+             "/imagenespokemones/Dragonair.png",
+             "/imagenespokemones/Dragonite.png",
+             "/imagenespokemones/Mewtwo.png",
+             "/imagenespokemones/Mew.png",
+            
+             
+             
+             
+             
+             
+        };
+        tipopok = new String[]{"Planta/Veneno", "Planta/Veneno", "Planta/Veneno","Fuego","Fuego","Fuego/Volador",
+        "Agua","Agua","Agua","Bicho","Bicho","Bicho/Volador","Bicho/Veneno","Bicho/Veneno","Bicho/Veneno",
+        "Normal/Volador","Normal/Volador","Normal/Volador","Normal","Normal","Normal/Volador","Normal/Volador","Veneno",
+        "Veneno","Eléctrico","Eléctrico","Tierra","Tierra","Veneno","Veneno","Veneno/Tierra","Veneno","Veneno","Veneno/Tierra",
+        "Hada","Hada","Fuego"," Fuego","Normal/Hada","Normal/Hada","Veneno/Volador","Veneno/Volador","Planta/Veneno","Planta/Veneno",
+        "Planta/Veneno","Bicho/Planta","Bicho/Planta","Bicho/Veneno","Bicho/Veneno","Tierra","Tierra","Normal","Normal","Agua",
+        "Agua","Lucha","Lucha","Fuego","Fuego","Agua","Agua","Agua/Lucha","Psíquico","Psíquico","Psíquico","Lucha","Lucha",
+        "Lucha","Planta/Veneno","Planta/Veneno","Planta/Veneno","Agua/Veneno","Agua/Veneno","Roca/Tierra","Roca/Tierra",
+        "Roca/Tierra","Fuego","Fuego","Agua/Psíquico","Agua/Psíquico","Eléctrico/Acero","Eléctrico/Acero","Normal/Volador",
+        "Normal/Volador ","Normal/Volador","Agua"," Agua/Hielo","Veneno","Veneno","Agua","Agua/Hielo","Fantasma/Veneno",
+        "Fantasma/Veneno","Fantasma/Veneno"," Roca/Tierra ","Psíquico"," Psíquico","Agua","Agua","Eléctrico","Eléctrico",
+        " Planta/Psíquico","Planta/Psíquico","Tierra"," Tierra","Lucha","Lucha","Normal","Veneno","Veneno","Tierra/Roca",
+        " Tierra/Roca","Normal","Planta","Normal","Agua","Agua","Agua","Agua","Agua","Agua/Psíquico","Psíquico/Hada",
+        "Bicho/Volador","Hielo/Psíquico ","Eléctrico","Fuego","Bicho","Normal","Agua","Agua/Volador","Agua/Hielo","Normal",
+        "Normal","Agua","Eléctrico","Fuego"," Normal","Roca/Agua","Roca/Agua","Roca/Agua"," Roca/Agua"," Roca/Volador ",
+        "Normal","Hielo/Volador","Eléctrico/Volador","Fuego/Volador","Dragón","Dragón","Dragón/Volador"," Psíquico","Psíquico"
+        
+        
+        
+        
+        
+        };
+        nombrepok = new String[]{"Bulbasaur", "Ivysaur", "Venusaur","Charmander","Charmeleon","Charizard",
+        "Squirtle","Wartortle","Blastoise","Caterpie","Metapod","Butterfree","Weedle","Kakuna","Beedrill",
+        "Pidgey","Pidgeotto","Pidgeot","Rattata","Raticate","Spearow","Fearow","Ekans","Arbok","Pikachu"," Raichu",
+        "Sandshrew","Sandslash","Nidoran","Nidorina","Nidoqueen","Nidoran","Nidorino","Nidoking",
+        "Clefairy","Clefable","Vulpix","Ninetales","Jigglypuff","Wigglytuff","Zubat","Golbat","Oddish","Gloom","Vileplume","Paras","Parasect",
+        "Venonat","Venomoth","Diglett","Dugtrio","Meowth","Persian","Psyduck","Golduck","Mankey","Primeape","Growlithe","Arcanine",
+        "Poliwag","Poliwhirl","Poliwrath","Abra","Kadabra","Alakazam","Machop","Machoke","Machamp",
+        "Bellsprout","Weepinbell","Victreebel","Tentacool","Tentacruel","Geodude","Graveler","Golem","Ponyta","Rapidash",
+        "Slowpoke","Slowbro","Magnemite","Magneton","Farfetch'd","Doduo","Dodrio"," Seel","Dewgong","Grimer","Muk",
+        " Shellder","Cloyster","Gastly","Haunter","Gengar","Onix","Drowzee","Hypno","Krabby"," Kingler","Voltorb","Electrode",
+        "Exeggcute","Exeggutor","Cubone","Marowak"," Hitmonlee","Hitmonchan ","Lickitung","Koffing","Weezing","Rhyhorn","Rhydon","Chansey",
+        "Tangela"," Kangaskhan","Horsea","Seadra","Goldeen","Seaking","Staryu","Starmie","Mr. Mime","Scyther","Jynx",
+        "Electabuzz","Magmar","Pinsir","Tauros","Magikarp","Gyarados","Lapras","Ditto","Eevee","Vaporeon"," Jolteon",
+        "Flareon","Porygon","Omanyte","Omastar","Kabuto"," Kabutops","Aerodactyl"," Snorlax","Articuno","Zapdos",
+        "Moltres","Dratini"," Dragonair","Dragonite"," Mewtwo","Mew"
+        
+        
+        
+        };
+        colorpok = new String[]{"Verde", "Verde", "Verde","Naranja","Rojo anaranjado","Naranja oscuro",
+        "Azul claro","Azul","Azul oscuro","Verde","Verde claro","Morado","Marrón","Amarillo","Amarillo y negro",
+        "Marrón claro","Marrón","Marrón y crema","Morado","Marrón","Marrón","Marrón oscuro","Morado","Amarillo","Amarillo anaranjado",
+        "Amarillo","Amarillo","azul","Azul","Azul","Morado","Morado","Morado","Rosa","Rosa","Naranja","Amarillo","Rosa",
+        "Rosa","Azul","Azul","Azul","Azul","Rojo/azul","Rojo","Rojo","Morado","Morado","Marrón","Marrón","Amarillo","Amarillo","Amarillo",
+        "Azul","Marrón","Marrón","Naranja","Naranja","Naranja","Azul","Azul","Azul","Amarillo","Amarillo","Gris","Gris"," Gris",
+        "Gris","Verde","Verde","Verde","Azul","Azul","Marrón","Marrón","Marorón","Amarillo","Amarillo","Rosa","rosa","Gris",
+        "Gris","Marrón","Marrón","Marrón","Blanco","Blanco","Morado","Morado","Morado","Morado"," Morado","Morado","Morado","Gris",
+        "Amarillo","Amarillo","Rojo","Rojo","Rojo","Rojo","Rosa","Amarillo","Marrón","Marrón","Marrón","Marrón","Rosa",
+        "Morado","Morado","Gris","Gris","Rosa","Azul","Marrón","Azul","Azul","Rojo","Rojo","Marrón","Morado","Rosa"," Verde",
+        "Morado","Amarillo","Rojo","Marrón","Marrón","Rojo","Azul","Azul","Rosa","Marrón","Azul","Amarillo","Rojo",
+        "Rosa","Azul","Azul","Marrón","Marrón","Morado"," Azul"," Azul"," Amarillo","Rojo","Azul","Azul","Naranja"," Blanco",
+        "Rosa"
+        
+        
+        
+        
+        
+        };
+
+        /* Esto tambien es del JScrollpane para instanciar la clase y poder almacenar todo en el mismo*/
+        JPanel panelPokemones = new JPanel();
+        panelPokemones.setLayout(new javax.swing.BoxLayout(panelPokemones, javax.swing.BoxLayout.Y_AXIS));
+
+        /* Todo este for es para almacenar el arreglo de los pokemon a la variable etiqueta se le ajusta 
+        la fuente, el tamaño, el color, el borde compuesto es para que no se ponga un borde encima del otro 
+        a medida que se agreguen pokemones esto es la linea de BorderFactory.
+        
+        despues se le asigna un tamaño maximo a etiqueta y luego se crea la variable index para que almacene los pokemon
+        a medida que recorre el arreglo para que no haya errores, el metodo mouseListener es para que cuando se clickee el area del pokemon
+        muestra la imagen  y la informacion dependiendo el orden del arreglo y la informacion.
+        
+        por ultimo simplemente es para almacenar la imagen en una variable Icon se acomoda el tamaño de la imagen y se
+        setea la informacion a la variable con base al arreglo.
+         */
+        for (int i = 0; i < pokemones.length; i++) {
+            JLabel etiqueta = new JLabel(pokemones[i]);
+            etiqueta.setFont(new java.awt.Font("Unispace", 0, 30));
+            etiqueta.setForeground(Color.BLACK);
+            etiqueta.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(Color.BLACK, 2, true),
+                    BorderFactory.createEmptyBorder(5, 10, 5, 10)));
+            etiqueta.setMaximumSize(new Dimension(417, 561));
+            int index = i;
+            etiqueta.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    etiqueta.setBackground(new Color(230, 230, 255));
+                    etiqueta.setOpaque(true);
+                    etiqueta.repaint();
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    etiqueta.setOpaque(false);
+                    etiqueta.repaint();
+                }
+
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    ImageIcon icon = new ImageIcon(getClass().getResource(imagenespoke[index]));
+                    imagenespokemon.setIcon(new ImageIcon(icon.getImage().getScaledInstance(400, 400, Image.SCALE_SMOOTH)));
+                    tipo.setText(tipopok[index]);
+                    nombre.setText(nombrepok[index]);
+                    color.setText(colorpok[index]);
+                }
+            });
+            panelPokemones.add(etiqueta);
+        }
+
+        /* Esto es para el JScrollpane para dimensionarlo a medida 
+        de cuantos pokemon haya y para que se vea en el Jframe*/
+        panelPokemones.setPreferredSize(new Dimension(417, pokemones.length * 151));
+
+        lista.getVerticalScrollBar().setUnitIncrement(35);
+        lista.setViewportView(panelPokemones);
+        panelPokemones.setBackground(new Color(220, 235, 245));
+        lista.setBackground(new Color(220, 235, 245));
+
+        /* Esto es para agregar los labels al Jframe para mostrar tanto la imagen de 
+        los pokemons como la descripcion que se agrego en los arreglos */
+        fondokex.setLayout(null);
+        fondokex.add(imagenespokemon);
+        fondokex.add(tipo);
+        fondokex.add(nombre);
+        fondokex.add(color);
+        fondokex.revalidate();
+        fondokex.repaint();
+
+        /* Este es un metodo para personalizar la barra del scroll 
+        se pueden cambiar los colores pero de resto dejarlo quieto */
+        lista.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+            @Override
+            protected void configureScrollBarColors() {
+                this.thumbColor = new Color(255, 102, 102);
+                this.trackColor = new Color(255, 255, 255);
+            }
+
+            @Override
+            protected JButton createDecreaseButton(int orientation) {
+                return createCustomButton();
+            }
+
+            @Override
+            protected JButton createIncreaseButton(int orientation) {
+                return createCustomButton();
+            }
+
+            private JButton createCustomButton() {
+                JButton button = new JButton();
+                button.setPreferredSize(new Dimension(0, 0));
+                button.setVisible(false);
+                return button;
+            }
+        });
+        lista.getHorizontalScrollBar().setUI(new BasicScrollBarUI(){
+        @Override
+            protected void configureScrollBarColors() {
+                this.thumbColor = new Color(255, 102, 102);
+                this.trackColor = new Color(255, 255, 255);
+            }
+
+            @Override
+            protected JButton createDecreaseButton(int orientation) {
+                return createCustomButton();
+            }
+
+            @Override
+            protected JButton createIncreaseButton(int orientation) {
+                return createCustomButton();
+            }
+
+            private JButton createCustomButton() {
+                JButton button = new JButton();
+                button.setPreferredSize(new Dimension(0, 0));
+                button.setVisible(false);
+                return button;
+            }
+    });
+
+        volver1.setBorder(BorderFactory.createLineBorder(Color.BLACK, 4, true));
+        volver1.setFocusPainted(false);
+        Buscar.setBorder(BorderFactory.createLineBorder(Color.BLACK, 4, true));
+        Buscar.setFocusPainted(false);
+        Salir.setBorder(BorderFactory.createLineBorder(Color.BLACK, 4, true));
+        Salir.setFocusPainted(false);
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    private void initComponents() {
+
+        jMenuItem1 = new javax.swing.JMenuItem();
+        buscarframe = new javax.swing.JFrame();
+        bucarpok = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
+        fondokex = new javax.swing.JPanel();
+        lista = new javax.swing.JScrollPane();
+        nombremenu = new javax.swing.JPanel();
+        quequidexregionkanto = new javax.swing.JLabel();
+        volver1 = new javax.swing.JButton();
+        Buscar = new javax.swing.JButton();
+        Salir = new javax.swing.JButton();
+
+        jMenuItem1.setText("jMenuItem1");
+
+        buscarframe.setTitle("buscar pok");
+        buscarframe.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        bucarpok.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bucarpokActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("buscar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = {"nombre","tipo" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(jList1);
+
+        javax.swing.GroupLayout buscarframeLayout = new javax.swing.GroupLayout(buscarframe.getContentPane());
+        buscarframe.getContentPane().setLayout(buscarframeLayout);
+        buscarframeLayout.setHorizontalGroup(
+            buscarframeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(buscarframeLayout.createSequentialGroup()
+                .addGroup(buscarframeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(buscarframeLayout.createSequentialGroup()
+                        .addGap(101, 101, 101)
+                        .addGroup(buscarframeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(bucarpok, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(buscarframeLayout.createSequentialGroup()
+                        .addGap(117, 117, 117)
+                        .addComponent(jButton1)))
+                .addContainerGap(118, Short.MAX_VALUE))
+        );
+        buscarframeLayout.setVerticalGroup(
+            buscarframeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(buscarframeLayout.createSequentialGroup()
+                .addContainerGap(43, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(bucarpok, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addGap(41, 41, 41))
+        );
+
+        bucarpok.getAccessibleContext().setAccessibleName("buscarpok");
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        fondokex.setBackground(new java.awt.Color(255, 255, 255));
+
+        lista.setBackground(new java.awt.Color(153, 153, 255));
+        lista.setPreferredSize(new java.awt.Dimension(417, 561));
+
+        nombremenu.setBackground(new java.awt.Color(255, 0, 0));
+
+        quequidexregionkanto.setFont(new java.awt.Font("Unispace", 0, 48)); // NOI18N
+        quequidexregionkanto.setText("QueQuidex Region Kanto");
+
+        javax.swing.GroupLayout nombremenuLayout = new javax.swing.GroupLayout(nombremenu);
+        nombremenu.setLayout(nombremenuLayout);
+        nombremenuLayout.setHorizontalGroup(
+            nombremenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(nombremenuLayout.createSequentialGroup()
+                .addGap(47, 47, 47)
+                .addComponent(quequidexregionkanto)
+                .addContainerGap(78, Short.MAX_VALUE))
+        );
+        nombremenuLayout.setVerticalGroup(
+            nombremenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(nombremenuLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(quequidexregionkanto)
+                .addContainerGap(14, Short.MAX_VALUE))
+        );
+
+        volver1.setFont(new java.awt.Font("Unispace", 0, 14)); // NOI18N
+        volver1.setText("Volver al menu");
+        volver1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                volver1ActionPerformed(evt);
+            }
+        });
+
+        Buscar.setFont(new java.awt.Font("Unispace", 0, 14)); // NOI18N
+        Buscar.setText("Buscar");
+        Buscar.setMaximumSize(new java.awt.Dimension(156, 25));
+        Buscar.setMinimumSize(new java.awt.Dimension(156, 25));
+        Buscar.setPreferredSize(new java.awt.Dimension(156, 25));
+        Buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BuscarActionPerformed(evt);
+            }
+        });
+
+        Salir.setFont(new java.awt.Font("Unispace", 0, 14)); // NOI18N
+        Salir.setText("Salir");
+        Salir.setPreferredSize(new java.awt.Dimension(156, 25));
+        Salir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SalirActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout fondokexLayout = new javax.swing.GroupLayout(fondokex);
+        fondokex.setLayout(fondokexLayout);
+        fondokexLayout.setHorizontalGroup(
+            fondokexLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(fondokexLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(fondokexLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, fondokexLayout.createSequentialGroup()
+                        .addComponent(nombremenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(44, 44, 44))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, fondokexLayout.createSequentialGroup()
+                        .addComponent(Salir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(Buscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(volver1)
+                        .addGap(22, 22, 22))))
+        );
+        fondokexLayout.setVerticalGroup(
+            fondokexLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(fondokexLayout.createSequentialGroup()
+                .addGroup(fondokexLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(fondokexLayout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(lista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(fondokexLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, fondokexLayout.createSequentialGroup()
+                                .addComponent(Salir, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2))
+                            .addGroup(fondokexLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(volver1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(Buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(nombremenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(fondokex, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 1230, 720));
+
+        pack();
+    }// </editor-fold>                        
+
+    public void setin(inicio in) {
+    this.in = in;
+}
+
+    //Metodo para volver al menu
+    private void volver1ActionPerformed(java.awt.event.ActionEvent evt) {                                        
+        in.setVisible(true);
+        this.setVisible(false);
+    }                                       
+
+    private void SalirActionPerformed(java.awt.event.ActionEvent evt) {                                      
+        System.exit(0);
+    }                                     
+
+    private void BuscarActionPerformed(java.awt.event.ActionEvent evt) {                                       
+        buscarframe.setLocationRelativeTo(this); // centrar respecto al principal
+        buscarframe.setBounds(324, 214, 324, 214);
+        buscarframe.setVisible(true);
+
+        buscarframe.getContentPane().setBackground(new Color(15, 32, 85));
+
+    }                                      
+
+    private void bucarpokActionPerformed(java.awt.event.ActionEvent evt) {                                         
+
+    }                                        
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        // 1. Obtener el panel de Pokémon del JScrollPane
+        JPanel panel = (JPanel) lista.getViewport().getView();
+
+        // 2. Obtener criterios de búsqueda
+        String criterio = jList1.getSelectedValue();
+        String textoBusqueda = bucarpok.getText().toLowerCase();
+
+        // 3. Obtener los componentes JLabel hijos del panel
+        Component[] componentes = panel.getComponents();
+
+        // 4. Buscar coincidencias usando los arrays existentes
+        for (int i = 0; i < componentes.length; i++) {
+            if (componentes[i] instanceof JLabel) {
+                JLabel etiqueta = (JLabel) componentes[i];
+                boolean coincide = false;
+
+                // El texto del JLabel debe coincidir con pokemones[i]
+                if (etiqueta.getText().equals(pokemones[i])) {
+                    if ("nombre".equals(criterio)) {
+                        coincide = nombrepok[i].toLowerCase().contains(textoBusqueda);
+                    } else if ("tipo".equals(criterio)) {
+                        coincide = tipopok[i].toLowerCase().contains(textoBusqueda);
+                    }
+                }
+
+                etiqueta.setVisible(coincide);
+            }
+        }
+
+        // 5. Cerrar ventana de búsqueda y actualizar
+        buscarframe.setVisible(false);
+        panel.revalidate();
+        panel.repaint();
+    }                                        
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+    /* Set the Nimbus look and feel */
+    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+    /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+     */
+    try {
+        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) {
+                javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                break;
+            }
+        }
+    } catch (ClassNotFoundException ex) {
+        java.util.logging.Logger.getLogger(QueQuidex.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (InstantiationException ex) {
+        java.util.logging.Logger.getLogger(QueQuidex.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (IllegalAccessException ex) {
+        java.util.logging.Logger.getLogger(QueQuidex.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        java.util.logging.Logger.getLogger(QueQuidex.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    }
+    //</editor-fold>
+
+    /* Create and display the form */
+    java.awt.EventQueue.invokeLater(new Runnable() {
+        public void run() {
+            new QueQuidex().setVisible(true);
+        }
+    });
+}
+
+    // Variables declaration - do not modify                     
+    private javax.swing.JButton Buscar;
+    private javax.swing.JButton Salir;
+    private javax.swing.JTextField bucarpok;
+    private javax.swing.JFrame buscarframe;
+    private javax.swing.JPanel fondokex;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JList<String> jList1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane lista;
+    private javax.swing.JPanel nombremenu;
+    private javax.swing.JLabel quequidexregionkanto;
+    private javax.swing.JButton volver1;
+    // End of variables declaration                   
+
+}
